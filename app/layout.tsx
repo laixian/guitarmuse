@@ -20,8 +20,13 @@ export const metadata: Metadata = {
 
 // 配置
 export const dynamic = 'force-dynamic';
-export const revalidate = 1; // 1秒后重新验证
-export const fetchCache = 'default-no-store';
+export const revalidate = 0; // 禁用缓存
+export const fetchCache = 'force-no-store';
+export const headers = {
+  'Cache-Control': 'no-store, must-revalidate',
+  'Pragma': 'no-cache',
+  'Expires': '0',
+};
 
 export default function RootLayout({
   children,

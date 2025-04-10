@@ -24,3 +24,159 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* 音频波形动画 - 增强版 */
+@keyframes barAnimate {
+  0% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(0.4);
+  }
+  100% {
+    transform: scaleY(1);
+  }
+}
+
+@-webkit-keyframes barAnimate {
+  0% {
+    -webkit-transform: scaleY(1);
+  }
+  50% {
+    -webkit-transform: scaleY(0.4);
+  }
+  100% {
+    -webkit-transform: scaleY(1);
+  }
+}
+
+/* 音符浮动动画 - 优化白色音符效果 */
+@keyframes noteFloat {
+  0% {
+    opacity: 0;
+    transform: translateY(0) translateZ(0);
+  }
+  20% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-40px) translateZ(0);
+  }
+}
+
+@-webkit-keyframes noteFloat {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateY(0) translateZ(0);
+  }
+  20% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: translateY(-40px) translateZ(0);
+  }
+}
+
+/* 确保动画在所有浏览器中都能正常显示 */
+.wave-bar {
+  animation: barAnimate 1s ease-in-out infinite;
+  -webkit-animation: barAnimate 1s ease-in-out infinite;
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.music-note {
+  animation: noteFloat 2.5s ease-in-out infinite;
+  -webkit-animation: noteFloat 2.5s ease-in-out infinite;
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.3);
+}
+
+/* 确保在所有浏览器中动画正常工作 */
+@supports ((-webkit-appearance:none) or (appearance:none)) {
+  .wave-bar, .music-note {
+    transform-style: preserve-3d !important;
+    -webkit-transform-style: preserve-3d !important;
+    transform: translateZ(0) !important;
+    -webkit-transform: translateZ(0) !important;
+    backface-visibility: hidden !important;
+    -webkit-backface-visibility: hidden !important;
+  }
+}
+
+/* 脉动动画 */
+@keyframes pulse {
+  0% {
+    transform: scale(1) translateZ(0);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.1) translateZ(0);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1) translateZ(0);
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    -webkit-transform: scale(1) translateZ(0);
+    opacity: 1;
+  }
+  50% {
+    -webkit-transform: scale(1.1) translateZ(0);
+    opacity: 0.8;
+  }
+  100% {
+    -webkit-transform: scale(1) translateZ(0);
+    opacity: 1;
+  }
+}
+
+/* 所有动画元素的全局性能优化 */
+.wave-bar, 
+.music-note, 
+[style*="animation"],
+.animate-pulse,
+.animate-bounce,
+.animate-spin {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+
+/* 修复Safari浏览器中的动画问题 */
+@media not all and (min-resolution:.001dpcm) { 
+  @supports (-webkit-appearance:none) {
+    .wave-bar, 
+    .music-note, 
+    [style*="animation"] {
+      -webkit-transform: translateZ(0);
+      transform: translateZ(0);
+      -webkit-perspective: 1000;
+      perspective: 1000;
+      -webkit-transform-style: preserve-3d;
+      transform-style: preserve-3d;
+    }
+  }
+}
