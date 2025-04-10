@@ -4,6 +4,7 @@ import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 import { ArrowRight, Music, Guitar, Waves, FileText } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { Logo } from './logo'
 
 const features = [
   {
@@ -47,7 +48,7 @@ export function LandingPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
       {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-screen pt-20 flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10" />
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -56,7 +57,7 @@ export function LandingPage() {
           className="relative z-10 text-center px-4"
         >
           <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6">
-            GuitarMuse
+            Guitar<span className="bg-gradient-to-r from-red-400 to-red-500 text-white px-3 py-1 rounded-md shadow-md ml-1">Muse</span>
           </h1>
           <p className="text-xl md:text-2xl text-gray-600 mb-8 max-w-2xl mx-auto">
             智能音乐分析工具，让吉他学习更简单

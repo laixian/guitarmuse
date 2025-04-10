@@ -7,6 +7,7 @@ import { AudioPlayer } from '../components/audio-player'
 import { ChordChart } from '../components/chord-chart'
 import { ErrorNotice } from '../components/error-notice'
 import { useAudioStore } from '../store/audio-store'
+import { Logo } from '../components/logo'
 
 export default function AnalysisPage() {
   const { isProcessing, processingProgress, analysisResult, audioUrl, audioFile } = useAudioStore()
@@ -23,11 +24,11 @@ export default function AnalysisPage() {
   }, [])
   
   return (
-    <main className="min-h-screen bg-gray-50">
-      <div className="container mx-auto py-16 px-4">
+    <main className="min-h-screen bg-gray-50 pt-20">
+      <div className="container mx-auto py-8 px-4">
         <div className="max-w-4xl mx-auto">
-          <header className="text-center mb-12">
-            <h1 className="text-3xl font-bold text-gray-900 mb-2">GuitarMuse</h1>
+          <header className="text-center mb-8">
+            <Logo size="medium" />
             <p className="text-lg text-gray-600">
               上传音频，快速获取吉他功能谱
             </p>
