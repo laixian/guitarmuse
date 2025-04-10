@@ -19,6 +19,15 @@ const nextConfig = {
     // 将在服务器端生效但不会暴露给浏览器的配置
     tempDir: `${process.cwd()}/temp`,
   },
+  // 设置合理的超时时间
+  staticPageGenerationTimeout: 120,
+  // 禁用页面缓存
+  onDemandEntries: {
+    // 页面在内存中保持的时间（毫秒）
+    maxInactiveAge: 25 * 1000,
+    // 同时保持的页面数量
+    pagesBufferLength: 2,
+  },
   async headers() {
     return [
       {
