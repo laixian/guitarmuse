@@ -1,5 +1,5 @@
 'use client'
-
+export const dynamic = "force-dynamic";
 import { useEffect, Suspense } from 'react'
 import { AudioUploader } from './components/audio-uploader'
 import { ProcessingStatus } from './components/processing-status'

@@ -7,7 +7,7 @@ RUN npm install -g pnpm
 WORKDIR /app
 
 # Copy package.json and pnpm-lock.yaml to install dependencies first
-COPY package.json pnpm-lock.yaml ./
+COPY package.json package-lock.json ./
 
 # Install dependencies
 RUN pnpm install
@@ -19,7 +19,7 @@ FROM base AS builder
 COPY . .
 
 # Build the application
-RUN pnpm run build
+RUN rm -rf .next && pnpm run build
 
 FROM node:23-alpine AS runner
 
