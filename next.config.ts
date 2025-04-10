@@ -31,6 +31,18 @@ const nextConfig = {
           {
             key: 'Cross-Origin-Embedder-Policy',
             value: 'require-corp',
+          },
+          {
+            key: 'Cache-Control',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
           }
         ]
       }

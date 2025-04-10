@@ -8,6 +8,10 @@ import getConfig from 'next/config';
 // 不再导入客户端分析库
 // import { analyzeAudio } from '../../lib/audio-analyzer';
 
+// 设置API路由的缓存控制
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // 获取服务器配置
 const { serverRuntimeConfig } = getConfig();
 const tempDir = serverRuntimeConfig.tempDir || path.join(process.cwd(), 'temp');
@@ -20,6 +24,13 @@ if (!fs.existsSync(tempDir)) {
 // 服务端分析API
 export async function POST(request: NextRequest) {
   try {
+    // 设置响应头，禁用缓存
+    const headers = {
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    };
+
     // 获取上传的音频文件
     const formData = await request.formData();
     const audioFile = formData.get('audio') as File;
@@ -29,7 +40,7 @@ export async function POST(request: NextRequest) {
     if (!audioFile) {
       return NextResponse.json(
         { error: '未提供音频文件' },
-        { status: 400 }
+        { status: 400, headers }
       );
     }
     
