@@ -44,13 +44,16 @@ USER node
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
   CMD wget --no-verbose --tries=1 --spider http://localhost:3000/api/health || exit 1
 
+# Set environment variables
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
 ENV HOSTNAME=0.0.0.0
 # 设置 Python API URL 环境变量，可以根据实际部署环境修改
-ENV PYTHON_API_URL=http://musiclub.ai/audio-api
+ENV PYTHON_API_URL=${PYTHON_API_URL}
 
+# Expose the port
 EXPOSE 3000
 
+# Start the application
 CMD ["node", "server.js"]
