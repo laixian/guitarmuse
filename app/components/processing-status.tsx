@@ -2,15 +2,18 @@
 
 import { useAudioStore } from '../store/audio-store'
 
-export const ProcessingStatus = () => {
+interface ProcessingStatusProps {
+  progress: number
+}
+
+export const ProcessingStatus = ({ progress }: ProcessingStatusProps) => {
   const { 
     isProcessing, 
-    processingProgress,
     uploadProgress,
     processingError 
   } = useAudioStore()
   
-  if (!isProcessing && processingProgress === 0) {
+  if (!isProcessing && progress === 0) {
     return null
   }
   
@@ -31,7 +34,7 @@ export const ProcessingStatus = () => {
   
   // 如果上传进度小于100%，优先显示上传进度
   const isUploading = uploadProgress < 100
-  const displayProgress = isUploading ? uploadProgress : processingProgress
+  const displayProgress = isUploading ? uploadProgress : progress
   const statusText = isUploading ? '正在上传文件' : '正在分析音频'
   
   return (
@@ -51,7 +54,7 @@ export const ProcessingStatus = () => {
         {isProcessing 
           ? (isUploading 
               ? `上传中 (${Math.round(uploadProgress)}%)` 
-              : `处理中 (${Math.round(processingProgress)}%)`)
+              : `处理中 (${Math.round(progress)}%)`)
           : '处理完成'}
       </p>
     </div>

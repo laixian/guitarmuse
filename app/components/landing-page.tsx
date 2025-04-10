@@ -33,7 +33,7 @@ const fadeInUp = {
   visible: { opacity: 1, y: 0 }
 }
 
-export default function LandingPage() {
+export function LandingPage() {
   const router = useRouter()
   const [ref, inView] = useInView({
     triggerOnce: true,

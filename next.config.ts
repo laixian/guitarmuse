@@ -14,6 +14,9 @@ const nextConfig = {
   experimental: {
     // turbo配置方式与webpack不同，先移除可能导致问题的配置
     // 在Next.js 13+中，此类配置可能需要其他处理方式
+    serverActions: {
+      bodySizeLimit: '10mb'
+    }
   },
   serverRuntimeConfig: {
     // 将在服务器端生效但不会暴露给浏览器的配置
@@ -28,6 +31,10 @@ const nextConfig = {
     // 同时保持的页面数量
     pagesBufferLength: 2,
   },
+  // 禁用静态优化
+  staticOptimization: false,
+  // 禁用自动静态优化
+  autoStaticOptimization: false,
   async headers() {
     return [
       {
@@ -43,7 +50,7 @@ const nextConfig = {
           },
           {
             key: 'Cache-Control',
-            value: 'no-store, no-cache, must-revalidate, proxy-revalidate',
+            value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
           },
           {
             key: 'Pragma',
@@ -52,6 +59,14 @@ const nextConfig = {
           {
             key: 'Expires',
             value: '0',
+          },
+          {
+            key: 'Surrogate-Control',
+            value: 'no-store',
+          },
+          {
+            key: 'Vary',
+            value: '*',
           }
         ]
       }

@@ -3,7 +3,11 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAudioStore } from '../store/audio-store'
 
-export const AudioPlayer = () => {
+interface AudioPlayerProps {
+  url: string
+}
+
+export const AudioPlayer = ({ url }: AudioPlayerProps) => {
   // 扩展音频存储的使用，添加时间区间选择相关功能
   const { 
     audioUrl, 
