@@ -45,6 +45,8 @@ export const ChordChart = () => {
   
   // 添加提示显示状态
   const [showEditTip, setShowEditTip] = React.useState(true)
+  // 添加编辑按钮引用
+  const editButtonRef = React.useRef<HTMLButtonElement>(null)
   
   if (!analysisResult) {
     return null
@@ -320,7 +322,7 @@ export const ChordChart = () => {
           
           {/* 添加可关闭的悬浮提示 */}
           {showEditTip && !isEditMode && (
-            <div className="absolute -top-24 left-8 w-64 bg-gradient-to-br from-white to-purple-50 border border-purple-100 rounded-lg shadow-lg z-10 overflow-hidden">
+            <div className="absolute -top-20 left-16 w-64 bg-gradient-to-br from-white to-purple-50 border border-purple-100 rounded-lg shadow-lg z-10 overflow-hidden">
               <div className="flex items-start p-3">
                 <div className="flex-shrink-0 mr-2">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-purple-500">
@@ -344,12 +346,14 @@ export const ChordChart = () => {
                 </button>
               </div>
               <div className="h-1 bg-gradient-to-r from-purple-400 to-indigo-500"></div>
-              <div className="absolute -bottom-2 left-28 w-4 h-4 bg-purple-50 border-b border-r border-purple-100 transform rotate-45"></div>
+              {/* 重新定位箭头，使其朝下指向编辑按钮 */}
+              <div className="absolute -bottom-2 left-[43px] w-4 h-4 bg-purple-50 border-t border-l border-purple-100 transform rotate-[225deg]"></div>
             </div>
           )}
           
           {!isEditMode && (
             <button 
+              ref={editButtonRef}
               onClick={toggleEditMode}
               className="text-sm px-3 py-1 bg-gray-100 rounded-full text-gray-600 hover:bg-gray-200 transition-colors"
             >
