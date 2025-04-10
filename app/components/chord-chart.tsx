@@ -43,6 +43,9 @@ export const ChordChart = () => {
     barsPerRow
   } = useAudioStore()
   
+  // 添加提示显示状态
+  const [showEditTip, setShowEditTip] = React.useState(true)
+  
   if (!analysisResult) {
     return null
   }
@@ -312,8 +315,39 @@ export const ChordChart = () => {
       </div>
       
       <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 relative">
           <h3 className="text-lg font-medium">速记功能谱</h3>
+          
+          {/* 添加可关闭的悬浮提示 */}
+          {showEditTip && !isEditMode && (
+            <div className="absolute -top-24 left-8 w-64 bg-gradient-to-br from-white to-purple-50 border border-purple-100 rounded-lg shadow-lg z-10 overflow-hidden">
+              <div className="flex items-start p-3">
+                <div className="flex-shrink-0 mr-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-purple-500">
+                    <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm8.706-1.442c1.146-.573 2.437.463 2.126 1.706l-.709 2.836.042-.02a.75.75 0 01.67 1.34l-.04.022c-1.147.573-2.438-.463-2.127-1.706l.71-2.836-.042.02a.75.75 0 11-.671-1.34l.041-.022zM12 9a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <div className="font-medium text-sm text-purple-800 mb-1">编辑模式提示</div>
+                  <div className="text-sm text-gray-700">
+                    点击"编辑"按钮进入编辑模式，可以为歌曲分段并编辑和弦
+                  </div>
+                </div>
+                <button 
+                  className="flex-shrink-0 ml-2 -mt-1 text-gray-400 hover:text-gray-600 transition-colors"
+                  onClick={() => setShowEditTip(false)}
+                  aria-label="关闭提示"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+              <div className="h-1 bg-gradient-to-r from-purple-400 to-indigo-500"></div>
+              <div className="absolute -bottom-2 left-28 w-4 h-4 bg-purple-50 border-b border-r border-purple-100 transform rotate-45"></div>
+            </div>
+          )}
+          
           {!isEditMode && (
             <button 
               onClick={toggleEditMode}
@@ -519,6 +553,25 @@ export const ChordChart = () => {
             {renderAnySection()}
           </div>
         )}
+      </div>
+      
+      {/* 快捷键指南 */}
+      <div className="mt-8 p-4 bg-gray-50 rounded-lg border border-gray-200">
+        <h3 className="text-sm font-medium text-gray-700 mb-3">快捷键指南</h3>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="flex items-center gap-3">
+            <kbd className="px-2 py-1 text-sm font-mono bg-white border border-gray-300 rounded shadow-sm">Ctrl + E</kbd>
+            <span className="text-sm text-gray-600">切换编辑模式</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <kbd className="px-2 py-1 text-sm font-mono bg-white border border-gray-300 rounded shadow-sm">Delete</kbd>
+            <span className="text-sm text-gray-600">删除选中的小节</span>
+          </div>
+          <div className="flex items-center gap-3">
+            <kbd className="px-2 py-1 text-sm font-mono bg-white border border-gray-300 rounded shadow-sm">Esc</kbd>
+            <span className="text-sm text-gray-600">清除选择</span>
+          </div>
+        </div>
       </div>
     </div>
   )

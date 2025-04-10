@@ -105,6 +105,51 @@ export function LandingPage() {
         </div>
       </section>
 
+      {/* 快捷键指南 Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-3xl md:text-4xl font-bold text-center mb-12"
+          >
+            快捷键指南
+          </motion.h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                key: 'Ctrl + E',
+                description: '切换编辑模式'
+              },
+              {
+                key: 'Delete / Backspace',
+                description: '删除选中的小节'
+              },
+              {
+                key: 'Esc',
+                description: '清除选择'
+              }
+            ].map((item, index) => (
+              <motion.div
+                key={item.key}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.2 }}
+                className="bg-white p-6 rounded-xl shadow-sm"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <kbd className="text-lg font-mono font-bold text-blue-600">{item.key}</kbd>
+                  </div>
+                  <p className="text-gray-600">{item.description}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-6xl mx-auto px-4">
