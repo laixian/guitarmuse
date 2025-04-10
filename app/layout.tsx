@@ -18,15 +18,12 @@ export const metadata: Metadata = {
   description: "智能音乐分析工具，一键生成吉他功能谱，让学习乐理更简单",
 };
 
-// 配置
-export const dynamic = 'force-dynamic';
-export const revalidate = 0; // 禁用缓存
-export const fetchCache = 'force-no-store';
-export const headers = {
-  'Cache-Control': 'no-store, must-revalidate',
-  'Pragma': 'no-cache',
-  'Expires': '0',
-};
+// 不要在layout文件中导出headers，这会导致构建错误
+// export const headers = {
+//   'Cache-Control': 'no-store, must-revalidate',
+//   'Pragma': 'no-cache',
+//   'Expires': '0',
+// };
 
 export default function RootLayout({
   children,

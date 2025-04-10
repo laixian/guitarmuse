@@ -8,9 +8,10 @@ import getConfig from 'next/config';
 // 不再导入客户端分析库
 // import { analyzeAudio } from '../../lib/audio-analyzer';
 
-// 设置API路由的缓存控制
+// 设置API路由的缓存控制 - 保留动态路由设置，这是必要的
 export const dynamic = 'force-dynamic';
-export const revalidate = 0;
+// 不再需要重复的缓存禁用设置，因为我们已在middleware和next.config中设置了
+// export const revalidate = 0;
 
 // 获取服务器配置
 const { serverRuntimeConfig } = getConfig();
@@ -24,11 +25,9 @@ if (!fs.existsSync(tempDir)) {
 // 服务端分析API
 export async function POST(request: NextRequest) {
   try {
-    // 设置响应头，禁用缓存
+    // 设置响应头，使用简化的缓存控制设置
     const headers = {
-      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-      'Pragma': 'no-cache',
-      'Expires': '0'
+      'Cache-Control': 'no-store',
     };
 
     // 获取上传的音频文件
@@ -71,7 +70,7 @@ export async function POST(request: NextRequest) {
         console.error('清理临时文件失败:', cleanupError);
       }
       
-      return NextResponse.json({ result: analysisResult });
+      return NextResponse.json({ result: analysisResult }, { headers });
     } catch (analyzeError) {
       console.error('音频分析失败:', analyzeError);
       
@@ -85,7 +84,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ 
         result: fallbackResult,
         warning: '使用了简化的音频分析方法'
-      });
+      }, { headers });
     }
   } catch (error) {
     console.error('服务端音频分析错误:', error);
