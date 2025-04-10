@@ -2,8 +2,12 @@
 
 import { AudioAnalysisResult } from '../types/audio';
 
-// 从环境变量获取 Python API URL，如果未设置则使用默认值
-const PYTHON_API_URL = process.env.PYTHON_API_URL || 'http://localhost:8000/api';
+// 从环境变量获取 Python API URL
+const PYTHON_API_URL = process.env.NEXT_PUBLIC_PYTHON_API_URL || process.env.PYTHON_API_URL;
+
+if (!PYTHON_API_URL) {
+  console.error('未设置 PYTHON_API_URL 环境变量');
+}
 
 // 内存缓存 - 页面刷新或服务重启时会自动消失
 // 缓存结构: {缓存键: {timestamp: 时间戳, result: 分析结果}}
