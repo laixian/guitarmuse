@@ -1,0 +1,86 @@
+addStructure: (type: string, afterIndex?: number) => {
+  set(state => {
+    if (!state.analysisResult) return state;
+    
+    const newStructures = [...state.analysisResult.structures];
+    const lastStructure = newStructures[newStructures.length - 1];
+    const insertIndex = afterIndex !== undefined ? afterIndex + 1 : newStructures.length;
+    
+    let startTime, endTime;
+    
+    if (afterIndex !== undefined && afterIndex < newStructures.length) {
+      startTime = newStructures[afterIndex].endTime;
+      
+      if (afterIndex < newStructures.length - 1) {
+        endTime = newStructures[afterIndex + 1].startTime;
+      } else {
+        endTime = startTime + 16; // 默认16秒，通常可以容纳4个标准小节
+      }
+    } else {
+      startTime = lastStructure ? lastStructure.endTime : 0;
+      endTime = startTime + 16; // 默认16秒，通常可以容纳4个标准小节
+    }
+    
+    const validType = ['Intro', 'Verse', 'Chorus', 'Bridge', 'Outro'].includes(type) 
+      ? type as SectionType 
+      : 'Verse' as SectionType;
+    
+    // 计算每小节平均时长
+    const beatsPerMeasure = 4; // 4/4拍
+    const measuresPerPhrase = 4; // 一个乐句通常有4个小节
+    const numberOfMeasures = beatsPerMeasure * measuresPerPhrase; // 共16拍，4个标准小节
+    const measureDuration = (endTime - startTime) / numberOfMeasures;
+      
+    // 创建包含多个小节的新段落
+    const measures: Measure[] = [];
+    
+    for (let i = 0; i < numberOfMeasures; i++) {
+      const measureStart = startTime + (i * measureDuration);
+      const measureEnd = startTime + ((i + 1) * measureDuration);
+      
+      // 为每个小节分配适当的和弦，这里简单使用调性和弦
+      let chord = state.analysisResult.key || 'C';
+      
+      // 对于4/4拍的音乐，可以尝试使用简单的I-IV-V-I和弦进行
+      const commonProgressions: Record<string, string[]> = {
+        'C': ['C', 'F', 'G', 'C'],
+        'G': ['G', 'C', 'D', 'G'],
+        'D': ['D', 'G', 'A', 'D'],
+        'A': ['A', 'D', 'E', 'A'],
+        'E': ['E', 'A', 'B', 'E'],
+        'F': ['F', 'Bb', 'C', 'F'],
+        'Am': ['Am', 'Dm', 'E', 'Am'],
+        'Em': ['Em', 'Am', 'B', 'Em']
+      };
+      
+      // 选择合适的和弦进行
+      const key = state.analysisResult.key || 'C';
+      const progression = commonProgressions[key] || commonProgressions['C'];
+      chord = progression[i % progression.length];
+      
+      measures.push({
+        number: i + 1,
+        chord: chord,
+        startTime: measureStart,
+        endTime: measureEnd
+      });
+    }
+    
+    const newStructure: SongStructure = {
+      type: validType,
+      startTime: startTime,
+      endTime: endTime,
+      measures: measures
+    };
+    
+    newStructures.splice(insertIndex, 0, newStructure);
+    
+    return {
+      analysisResult: {
+        ...state.analysisResult,
+        structures: newStructures
+      },
+      hasUserEdits: true
+    };
+  });
+} 
